@@ -1,10 +1,33 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { useState } from 'react';
+import { Button, StyleSheet, Text, View, Image } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 
 export default function App() {
+  const [image, setImage] = useState(null);
+
+  // Button #1 Pick an image
+  const pickImage = async () => {
+    let permissions = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    
+    if (permissions?.granted) {
+      let result = await ImagePicker.launchImageLibraryAsync();
+
+      if (!result.canceled) setImage(result.assets[0]);
+      else setImage(null) 
+    }
+  }
+
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+      {image &&
+      <Image source={{ uri: image.uri}} style={{ width: 200, height: 200}} />
+      }
+      <Button
+      title="Pick an image from the library"
+      onPress={pickImage}
+      />
       <StatusBar style="auto" />
     </View>
   );
