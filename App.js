@@ -19,6 +19,18 @@ export default function App() {
   }
 
 
+  // Button #2 Take a photo
+  const takePhoto = async () => {
+    let permissions = await ImagePicker.requestCameraPermissionsAsync();
+
+    if(permissions?.granted) {
+      let result = await ImagePicker.launchCameraAsync();
+
+      if(!result.canceled) setImage(result.assets[0]);
+      else setImage(null)
+    }
+  }
+
   return (
     <View style={styles.container}>
       {image &&
@@ -27,6 +39,10 @@ export default function App() {
       <Button
       title="Pick an image from the library"
       onPress={pickImage}
+      />
+      <Button
+      title="Take a photo"
+      onPress={takePhoto}
       />
       <StatusBar style="auto" />
     </View>
