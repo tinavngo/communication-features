@@ -1,8 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { Button, StyleSheet, Text, View, Image } from 'react-native';
+import MapView from 'react-native-maps';
 import * as ImagePicker from 'expo-image-picker';
 import * as MediaLibrary from 'expo-media-library';
+import * as Location from 'expo-location';
 
 export default function App() {
   const [image, setImage] = useState(null);
