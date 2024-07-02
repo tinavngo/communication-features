@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { Button, StyleSheet, Text, View, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import * as MediaLibrary from 'expo-media-library';
 
 export default function App() {
   const [image, setImage] = useState(null);
@@ -26,8 +27,13 @@ export default function App() {
     if(permissions?.granted) {
       let result = await ImagePicker.launchCameraAsync();
 
-      if(!result.canceled) setImage(result.assets[0]);
-      else setImage(null)
+      if(!result.canceled) {
+        let MediaLibraryPermissions = await MediaLibrary.requestPermissionsAsync();
+
+        if (MediaLibraryPermissions?.granted) await MediaLibrary.saveToLibraryAsync(result.assets[0].uri);
+
+        setImage(result.assets[0]);
+      } else setImage(null)
     }
   }
 
